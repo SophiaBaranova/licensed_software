@@ -1,0 +1,227 @@
+.admin-layout {
+    display: grid;
+    gap: 22px;
+}
+
+.admin-body {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 18px;
+}
+
+.admin-panel {
+    display: grid;
+    gap: 18px;
+}
+
+.admin-view {
+    display: grid;
+    gap: 18px;
+}
+
+.admin-main {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 280px;
+    gap: 18px;
+    align-items: start;
+}
+
+.action-panel {
+    display: grid;
+    gap: 14px;
+}
+
+.action-buttons {
+    display: grid;
+    gap: 12px;
+}
+
+.action-panel .section-title {
+    margin-bottom: 8px;
+}
+
+.action-panel .button {
+    width: 100%;
+}
+
+.admin-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 18px;
+    justify-content: center;
+}
+
+.tab-button {
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--surface);
+    color: var(--text);
+    padding: 10px 18px;
+    cursor: pointer;
+}
+
+.tab-button.active {
+    background: var(--accent);
+    color: #ffffff;
+    border-color: transparent;
+}
+
+.table-section {
+    overflow-x: auto;
+}
+
+.table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead th,
+tbody td {
+    padding: 14px 12px;
+    border-bottom: 1px solid var(--border);
+    text-align: left;
+}
+
+thead th {
+    background: var(--surface-muted);
+}
+
+tbody tr:hover {
+    background: var(--surface-alt);
+    cursor: pointer;
+}
+
+tbody tr.selected {
+    background: rgba(59, 130, 246, 0.12);
+}
+
+.button:disabled,
+button[disabled] {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+.button-danger {
+    background: #ef4444;
+    color: #ffffff;
+    border-color: transparent;
+}
+
+.card-slim {
+    padding: 0;
+}
+
+.modal {
+    width: min(720px, calc(100% - 32px));
+    max-height: calc(100vh - 64px);
+    overflow-y: auto;
+    padding: 24px;
+    border-radius: 18px;
+}
+
+.overlay {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(15, 23, 42, 0.6);
+    z-index: 50;
+}
+
+.overlay.hidden {
+    display: none;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+}
+
+.close-button {
+    font-size: 26px;
+    line-height: 1;
+    background: transparent;
+    border: none;
+    color: var(--text);
+    cursor: pointer;
+}
+
+.modal-fields {
+    display: grid;
+    gap: 16px;
+    margin-top: 18px;
+}
+
+.modal-field {
+    display: grid;
+    gap: 8px;
+}
+
+.modal-field label {
+    font-weight: 600;
+}
+
+.modal-field input,
+.modal-field textarea,
+.modal-field select {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--surface);
+    color: var(--text);
+}
+
+.modal-field textarea {
+    min-height: 90px;
+    resize: vertical;
+}
+
+.modal-field select {
+    width: 100%;
+    padding: 12px 40px 12px 14px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--surface);
+    color: var(--text);
+
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    background-image: url("data:image/svg+xml;utf8,<svg fill='%236b7280' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'><path d='M5 7l5 5 5-5z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 16px;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 18px;
+}
+
+@media (max-width: 900px) {
+    .admin-body,
+    .admin-main {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 640px) {
+    .modal {
+        width: calc(100% - 32px);
+    }
+}

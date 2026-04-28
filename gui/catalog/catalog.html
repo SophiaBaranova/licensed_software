@@ -1,0 +1,57 @@
+﻿<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TrustSoft - Каталог</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/styles.css" />
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body class="page-shell">
+    <header class="site-header">
+        <div class="header-inner">
+            <a class="site-brand" href="../homepage/index.html">TrustSoft</a>
+            <nav class="nav-links">
+                <a href="catalog.html">Каталог</a>
+                <a href="../auth/login.html">Увійти</a>
+            </nav>
+        </div>
+    </header>
+    <main class="container catalog-layout">
+        <section class="catalog-top card">
+            <div class="card-body">
+                <div class="catalog-search">
+                    <input id="searchInput" type="search" placeholder="Пошук продуктів за назвою..." />
+                    <button id="searchButton" class="button button-primary" type="button" disabled>Шукати</button>
+                </div>
+            </div>
+        </section>
+
+        <div class="catalog-grid">
+            <aside class="filters-panel card">
+                <div class="card-body">
+                    <h2 class="section-title">Фільтри</h2>
+                    <div class="filter-group" id="categoryFilters">
+                        <h3>Категорія</h3>
+                    </div>
+                    <div class="filter-group" id="vendorFilters">
+                        <h3>Виробник</h3>
+                    </div>
+                    <div class="filter-group" id="licenseFilters">
+                        <h3>Тип ліцензії</h3>
+                    </div>
+                </div>
+            </aside>
+            <section class="products-panel">
+                <div class="product-grid grid" id="catalogProducts"></div>
+            </section>
+        </div>
+    </main>
+    <footer class="footer">© 2026 TrustSoft</footer>
+    <script src="../../assets/app.js"></script>
+    <script type="module" src="catalog.js"></script>
+</body>
+</html>

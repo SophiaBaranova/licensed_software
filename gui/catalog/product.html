@@ -1,0 +1,62 @@
+﻿<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TrustSoft - Продукт</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/styles.css" />
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body class="page-shell">
+    <header class="site-header">
+        <div class="header-inner">
+            <a class="site-brand" href="../homepage/index.html">TrustSoft</a>
+            <nav class="nav-links">
+                <a href="catalog.html">Каталог</a>
+                <a href="../auth/login.html">Увійти</a>
+            </nav>
+        </div>
+    </header>
+    <div class="card-body">
+        <div id="productNotFound" class="product-not-found" hidden></div>
+    </div>
+    <main class="container product-details-card card">
+        <div class="product-grid-detail">
+            <div class="product-info card-body">
+                <h1 class="section-title" id="productTitle">Продукт</h1>
+                <p class="section-subtitle" id="productSubtitle">Опис продукту</p>
+                <div class="product-meta">
+                    <p><strong>Категорія:</strong> <span id="productCategory"></span></p>
+                    <p><strong>Виробник:</strong> <span id="productVendor"></span></p>
+                    <p><strong>Ліцензія:</strong> <span id="productLicense"></span></p>
+                    <p><strong>Ціна:</strong> <span id="productPrice"></span></p>
+                    <p><strong>Версія:</strong> <span id="productVersion"></span></p>
+                    <p><strong>Підтримувані ОС:</strong> <span id="productSupportedOS"></span></p>
+                </div>
+                <div class="product-description">
+                    <p id="productDescription"></p>
+                </div>
+                <div class="product-actions">
+                    <button id="downloadButton" class="button button-primary" type="button">Завантажити</button>
+                    <a class="button button-secondary" href="catalog.html">Повернутись до каталогу</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="downloadOverlay" class="overlay" aria-hidden="true">
+        <div class="overlay-panel card">
+            <button id="downloadOverlayClose" class="overlay-close" type="button" aria-label="Закрити">×</button>
+            <h2>Покликання для завантаження</h2>
+            <div class="overlay-url" id="downloadUrl">https://download.trustsoft.ua/phpstorm</div>
+            <button id="copyDownloadUrl" class="button button-secondary" type="button">Скопіювати</button>
+        </div>
+    </div>
+    <footer class="footer">© 2026 TrustSoft</footer>
+    <script src="../../assets/app.js"></script>
+    <script type="module" src="product.js"></script>
+</body>
+</html>

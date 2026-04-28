@@ -1,0 +1,43 @@
+﻿<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TrustSoft - Увійти</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/styles.css" />
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body class="page-shell">
+    <header class="site-header">
+        <div class="header-inner">
+            <a class="site-brand" href="../homepage/index.html">TrustSoft</a>
+        </div>
+    </header>
+    <main class="container">
+        <section class="form-card card">
+            <div class="card-body">
+                <h1 class="section-title">Увійти</h1>
+                <form id="loginForm" novalidate>
+                    <div class="form-field">
+                        <label for="loginLogin">Логін</label>
+                        <input id="loginLogin" type="text" name="login" required placeholder="Login" />
+                    </div>
+                    <div class="form-field">
+                        <label for="loginPassword">Пароль</label>
+                        <input id="loginPassword" type="password" name="password" required placeholder="••••••••" />
+                    </div>
+                    <div id="loginMessage" class="alert alert-warning" style="display:none"></div>
+                    <button class="button button-primary" type="submit">Увійти</button>
+                </form>
+                <p class="form-hint">Немає акаунту? <a href="signup.html">Зареєструватися</a></p>
+            </div>
+        </section>
+    </main>
+    <footer class="footer">© 2026 TrustSoft</footer>
+    <script src="../../assets/app.js"></script>
+    <script type="module" src="script.js"></script>
+</body>
+</html>

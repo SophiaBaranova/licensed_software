@@ -1,0 +1,104 @@
+﻿<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TrustSoft - Панель адміністратора</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/styles.css" />
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body class="page-shell">
+    <header class="site-header">
+        <div class="header-inner">
+            <a class="site-brand" href="../homepage/index.html">TrustSoft</a>
+            <nav class="nav-links">
+                <a href="../auth/login.html">Увійти</a>
+            </nav>
+        </div>
+    </header>
+    <main class="container admin-layout">
+        <section class="admin-top card">
+            <div class="card-body">
+                <h1 class="section-title">Панель адміністратора</h1>
+                <div class="admin-tabs" role="tablist">
+                    <button class="tab-button active" type="button" data-tab="category">Категорії</button>
+                    <button class="tab-button" type="button" data-tab="vendor">Виробники</button>
+                    <button class="tab-button" type="button" data-tab="product">Продукти</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="admin-body">
+            <section class="admin-panel card">
+                <div class="card-body">
+                    <div class="admin-view" id="adminView">
+                        <div class="admin-main">
+                            <div class="table-section">
+                                <h2 class="section-title"></h2>
+                                <div class="table-wrap">
+                                    <table>
+                                        <thead>
+                                            <tr></tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <aside class="action-panel card card-slim">
+                                <div class="card-body">
+                                    <h2 class="section-title">Дії</h2>
+                                    <div class="action-buttons">
+                                        <button class="button button-primary" id="addButton" type="button">Додати</button>
+                                        <button class="button button-secondary" id="editButton" type="button" disabled>Редагувати</button>
+                                        <button class="button button-danger" id="deleteButton" type="button" disabled>Видалити</button>
+                                    </div>
+                                </div>
+                            </aside>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </section>
+    </main>
+    <footer class="footer">© 2026 TrustSoft</footer>
+    <script src="../../assets/app.js"></script>
+    <script type="module" src="script.js"></script>
+
+    <div class="overlay hidden" id="modalOverlay" aria-hidden="true">
+        <div class="modal card">
+            <div class="modal-header">
+                <h3 id="modalTitle"></h3>
+                <button class="button button-icon close-button" type="button" aria-label="Закрити">×</button>
+            </div>
+            <form id="recordForm">
+                <div class="modal-fields" id="modalFields"></div>
+                <div id="formMessage" class="alert alert-warning" style="display:none"></div>
+                <div class="modal-actions">
+                    <button class="button button-primary" type="submit">Зберегти</button>
+                    <button class="button button-secondary" type="button" id="cancelButton">Скасувати</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="overlay hidden" id="confirmOverlay" aria-hidden="true">
+        <div class="modal card">
+            <div class="modal-header">
+                <h3>Підтвердження видалення</h3>
+                <button class="button button-icon close-button" type="button" aria-label="Закрити">×</button>
+            </div>
+            <div class="modal-body">
+                <p id="confirmText"></p>
+            </div>
+            <div class="modal-actions">
+                
+                <button class="button button-danger" type="button" id="confirmDeleteButton">Видалити</button>
+                <button class="button button-secondary" type="button" id="cancelDeleteButton">Скасувати</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
