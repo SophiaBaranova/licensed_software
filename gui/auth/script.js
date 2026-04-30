@@ -49,7 +49,13 @@ function validateLoginForm() {
         // TODO: Перевірка наявності облікового запису у БД та коректності пароля
 
         hideMessage(message);
-        window.location.href = '../catalog/index.html';
+
+        // Заглушка для демонстрації розмежування прав доступу (адмін vs користувач)
+        if (login === 'admin' && password === 'admin_password') {
+            window.location.href = '../admin/dashboard.html';
+        } else {
+            window.location.href = '../catalog/catalog.html';
+        }
     });
 }
 
