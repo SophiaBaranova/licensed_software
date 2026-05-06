@@ -26,6 +26,7 @@ function populateProductPage(product) {
     const supportedOS = document.getElementById('productSupportedOS');
     const description = document.getElementById('productDescription');
     const downloadUrl = document.getElementById('downloadUrl');
+    const productImage = document.getElementById('productImage');
     const notFound = document.getElementById('productNotFound');
     const detailsCard = document.querySelector('.product-details-card');
 
@@ -42,6 +43,8 @@ function populateProductPage(product) {
     supportedOS.textContent = product.supported_os;
     description.textContent = product.extended_description;
     downloadUrl.textContent = product.download_url;
+    productImage.src = product.image_url;
+    productImage.alt = product.name;
 }
 
 // Ініціалізація модального вікна для відображення покликання завантаження

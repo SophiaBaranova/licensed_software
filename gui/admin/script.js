@@ -1,4 +1,7 @@
-import { getCategories, getVendors, getProducts, getLicenseTypes } from '../../db/dataService.js';
+import { getCategories, getVendors, getProducts } from '../../db/dataService.js';
+import Category from '../../models/Category.js';
+import Vendor from '../../models/Vendor.js';
+import Product from '../../models/Product.js';
 
 const state = {
     activeTab: 'category',
@@ -43,24 +46,25 @@ function refreshActiveData() {
 
 const fieldsMap = {
     category: [
-        { key: 'name', label: 'Назва' },
-        { key: 'description', label: 'Опис' }
+        { key: 'name', label: 'Назва', type: 'text', required: true },
+        { key: 'description', label: 'Опис', type: 'textarea', required: true }
     ],
     vendor: [
-        { key: 'name', label: 'Назва' },
-        { key: 'website', label: 'Веб-сайт' }
+        { key: 'name', label: 'Назва', type: 'text', required: true },
+        { key: 'website', label: 'Веб-сайт', type: 'url', required: true }
     ],
     product: [
-        { key: 'name', label: 'Назва' },
-        { key: 'short_description', label: 'Короткий опис' },
-        { key: 'extended_description', label: 'Повний опис' },
-        { key: 'category', label: 'Категорія' },
-        { key: 'vendor', label: 'Виробник' },
-        { key: 'license', label: 'Ліцензія' },
-        { key: 'price', label: 'Ціна' },
-        { key: 'version', label: 'Версія' },
-        { key: 'supported_os', label: 'Підтримувані ОС' },
-        { key: 'download_url', label: 'URL для завантаження' }
+        { key: 'name', label: 'Назва', type: 'text', required: true },
+        { key: 'short_description', label: 'Короткий опис', type: 'textarea', required: true },
+        { key: 'extended_description', label: 'Повний опис', type: 'textarea', required: true },
+        { key: 'category', label: 'Категорія', type: 'select' },
+        { key: 'vendor', label: 'Виробник', type: 'select' },
+        { key: 'license', label: 'Ліцензія', type: 'text', required: true },
+        { key: 'price', label: 'Ціна', type: 'number', required: true },
+        { key: 'version', label: 'Версія', type: 'text', required: true },
+        { key: 'supported_os', label: 'Підтримувані ОС', type: 'textarea', required: true },
+        { key: 'download_url', label: 'URL для завантаження', type: 'url', required: true },
+        { key: 'image_url', label: 'URL зображення', type: 'url', required: true }
     ]
 };
 
@@ -140,7 +144,7 @@ function renderFormFields(values = {}) {
             input = document.createElement('textarea');
         } else if (field.type === 'select') {
             input = document.createElement('select');
-            const options = field.options || getOptions(field.name);
+            const options = field.options || getOptions(field.key);
             options.forEach((optionValue) => {
                 const option = document.createElement('option');
                 option.value = optionValue;
@@ -150,9 +154,6 @@ function renderFormFields(values = {}) {
         } else {
             input = document.createElement('input');
             input.type = field.type;
-            if (field.step) {
-                input.step = field.step;
-            }
         }
 
         input.id = `field-${field.key}`;

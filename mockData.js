@@ -56,7 +56,8 @@ export const products = [
         category: "Productivity",
         version: "3.2.0",
         supported_os: "Windows, macOS, Linux",
-        download_url: "https://www.acmesoft.com/download/taskmaster-pro"
+        download_url: "https://www.acmesoft.com/download/taskmaster-pro",
+        image_url: "https://placehold.co/400x280/2563eb/ffffff?text=TaskMaster+Pro&font=roboto"
     },
     {
         id: 2,
@@ -69,7 +70,8 @@ export const products = [
         category: "Design",
         version: "5.1.4",
         supported_os: "Windows, macOS",
-        download_url: "https://www.nimbuslabs.io/download/nimbus-studio"
+        download_url: "https://www.nimbuslabs.io/download/nimbus-studio",
+        image_url: "https://placehold.co/400x280/2563eb/ffffff?text=Nimbus+Studio&font=roboto"
     },
     {
         id: 3,
@@ -82,7 +84,8 @@ export const products = [
         category: "Security",
         version: "2.9.7",
         supported_os: "Windows, Linux",
-        download_url: "https://www.vertexsystems.com/download/vertex-secure"
+        download_url: "https://www.vertexsystems.com/download/vertex-secure",
+        image_url: "https://placehold.co/400x280/2563eb/ffffff?text=Vertex+Secure&font=roboto"
     },
     {
         id: 4,
@@ -95,7 +98,8 @@ export const products = [
         category: "Education",
         version: "4.0.2",
         supported_os: "Windows, macOS, Linux",
-        download_url: "https://www.bluepeak.io/download/bluelearn"
+        download_url: "https://www.bluepeak.io/download/bluelearn",
+        image_url: "https://placehold.co/400x280/2563eb/ffffff?text=BlueLearn&font=roboto"
     },
     {
         id: 5,
@@ -108,7 +112,8 @@ export const products = [
         category: "Developer Tools",
         version: "1.8.3",
         supported_os: "Windows, macOS, Linux",
-        download_url: "https://www.lunaware.dev/download/lunacode"
+        download_url: "https://www.lunaware.dev/download/lunacode",
+        image_url: "https://placehold.co/400x280/2563eb/ffffff?text=LunaCode&font=roboto"
     }
 ];
 

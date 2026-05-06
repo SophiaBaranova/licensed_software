@@ -87,6 +87,9 @@ function createProductCard(product) {
     article.dataset.license = product.license;
 
     article.innerHTML = `
+        <div class="product-card-image">
+            <img src="${product.image_url}" alt="${product.name}"/>
+        </div>
         <div class="card-body">
             <h3 class="card-title">${product.name}</h3>
             <p class="card-text">${product.short_description}</p>

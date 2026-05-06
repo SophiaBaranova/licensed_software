@@ -9,7 +9,8 @@ export default class Product {
         category,
         version,
         supported_os,
-        download_url
+        download_url,
+        image_url
     ) {
         if (!name?.trim()) throw new Error("Назва не може бути порожньою");
         if (!vendor?.trim()) throw new Error("Постачальник не може бути порожнім");
@@ -32,7 +33,13 @@ export default class Product {
         try {
             new URL(download_url);
         } catch {
-            throw new Error("покликання для завантаження має бути коректним URL (наприклад: https://example.com/download)");
+            throw new Error("Покликання для завантаження має бути коректним URL (наприклад: https://example.com/download)");
+        }
+
+        try {
+            new URL(image_url);
+        } catch {
+            throw new Error("Покликання на зображення має бути коректним URL (наприклад: https://example.com/image.jpg)");
         }
 
         this.name = name.trim();
@@ -45,5 +52,6 @@ export default class Product {
         this.version = version;
         this.supported_os = supported_os;
         this.download_url = download_url;
+        this.image_url = image_url;
     }
 }
