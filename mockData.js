@@ -1,44 +1,26 @@
-export const vendors = [
-    {
-        name: "Acme Soft",
-        website: "https://www.acmesoft.com"
-    },
-    {
-        name: "Nimbus Labs",
-        website: "https://www.nimbuslabs.io"
-    },
-    {
-        name: "Vertex Systems",
-        website: "https://www.vertexsystems.com"
-    },
-    {
-        name: "BluePeak Solutions",
-        website: "https://www.bluepeak.io"
-    },
-    {
-        name: "LunaWare",
-        website: "https://www.lunaware.dev"
-    }
-];
-
 export const categories = [
     {
+        id: 1,
         name: "Productivity",
         description: "Інструменти для підвищення ефективності роботи та організації завдань"
     },
     {
+        id: 2,
         name: "Design",
         description: "Програми для створення графіки, макетів і творчих проектів"
     },
     {
+        id: 3,
         name: "Security",
         description: "Рішення для захисту даних, мереж і систем користувачів"
     },
     {
+        id: 4,
         name: "Education",
         description: "Освітні додатки та навчальні платформи для студентів і викладачів"
     },
     {
+        id: 5,
         name: "Developer Tools",
         description: "Інструменти для розробки, налагодження та тестування програмного забезпечення"
     }
@@ -118,7 +100,6 @@ export const products = [
 ];
 
 export default {
-    vendors,
     categories,
     products
 };

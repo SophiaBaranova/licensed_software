@@ -1,4 +1,4 @@
-import { products, categories, vendors } from '../mockData.js';
+import { products, categories } from '../mockData.js';
 
 export function getProducts() {
     // TODO: Завантаження продуктів із БД
@@ -15,9 +15,10 @@ export function getCategories() {
     return categories;
 }
 
+// Отримання унікальних виробників зі списку продуктів
 export function getVendors() {
-    // TODO: Завантаження виробників із БД
-    return vendors;
+    const vendorSet = new Set(products.map((product) => product.vendor));
+    return Array.from(vendorSet);
 }
 
 // Отримання унікальних типів ліцензій зі списку продуктів

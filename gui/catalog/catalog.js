@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     renderProducts(allProducts);
 
     renderFilterGroup('categoryFilters', getCategories().map((category) => category.name));
-    renderFilterGroup('vendorFilters', getVendors().map((vendor) => vendor.name));
+    renderFilterGroup('vendorFilters', getVendors());
     renderFilterGroup('licenseFilters', getLicenseTypes());
 
     const searchInput = document.getElementById('searchInput');

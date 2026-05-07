@@ -1,6 +1,5 @@
 import { getCategories, getVendors, getProducts } from '../../db/dataService.js';
 import Category from '../../models/Category.js';
-import Vendor from '../../models/Vendor.js';
 import Product from '../../models/Product.js';
 
 const state = {
@@ -29,7 +28,6 @@ const closeButtons = Array.from(document.querySelectorAll('.close-button'));
 
 const data = {
     category: getCategories(),
-    vendor: getVendors(),
     product: getProducts()
 };
 
@@ -37,8 +35,6 @@ const data = {
 function refreshActiveData() {
     if (state.activeTab === 'category') {
         data.category = getCategories();
-    } else if (state.activeTab === 'vendor') {
-        data.vendor = getVendors();
     } else if (state.activeTab === 'product') {
         data.product = getProducts();
     }
@@ -47,38 +43,30 @@ function refreshActiveData() {
 const fieldsMap = {
     category: [
         { key: 'name', label: 'Назва', type: 'text', required: true },
-        { key: 'description', label: 'Опис', type: 'textarea', required: true }
-    ],
-    vendor: [
-        { key: 'name', label: 'Назва', type: 'text', required: true },
-        { key: 'website', label: 'Веб-сайт', type: 'url', required: true }
+        { key: 'description', label: 'Опис', type: 'textarea', required: false }
     ],
     product: [
         { key: 'name', label: 'Назва', type: 'text', required: true },
         { key: 'short_description', label: 'Короткий опис', type: 'textarea', required: true },
-        { key: 'extended_description', label: 'Повний опис', type: 'textarea', required: true },
-        { key: 'category', label: 'Категорія', type: 'select' },
-        { key: 'vendor', label: 'Виробник', type: 'select' },
+        { key: 'extended_description', label: 'Повний опис', type: 'textarea', required: false },
+        { key: 'category', label: 'Категорія', type: 'select', required: true },
+        { key: 'vendor', label: 'Виробник', type: 'text', required: true },
         { key: 'license', label: 'Ліцензія', type: 'text', required: true },
         { key: 'price', label: 'Ціна', type: 'number', required: true },
         { key: 'version', label: 'Версія', type: 'text', required: true },
         { key: 'supported_os', label: 'Підтримувані ОС', type: 'textarea', required: true },
         { key: 'download_url', label: 'URL для завантаження', type: 'url', required: true },
-        { key: 'image_url', label: 'URL зображення', type: 'url', required: true }
+        { key: 'image_url', label: 'URL зображення', type: 'url', required: false }
     ]
 };
 
 const tabLabels = {
     category: 'категорію',
-    vendor: 'виробника',
     product: 'продукт'
 };
 
 // Повернення варіантів для полів типу select у формі
 function getOptions(fieldName) {
-    if (fieldName === 'vendor') {
-        return data.vendor.map((item) => item.name);
-    }
     if (fieldName === 'category') {
         return data.category.map((item) => item.name);
     }
@@ -93,7 +81,7 @@ function getActiveRecord() {
 
 // Відображення таблиці записів для активної вкладки
 function renderTable() {
-    tableTitle.textContent = state.activeTab === 'category' ? 'Категорії' : state.activeTab === 'vendor' ? 'Виробники' : 'Продукти';
+    tableTitle.textContent = state.activeTab === 'category' ? 'Категорії' : 'Продукти';
 
     tableHeadRow.innerHTML = fieldsMap[state.activeTab]
         .map((field) => `<th>${field.label}</th>`)
@@ -158,7 +146,7 @@ function renderFormFields(values = {}) {
 
         input.id = `field-${field.key}`;
         input.name = field.key;
-        input.required = !!field.required;
+        input.required = field.required;
         if (values[field.key] !== undefined && values[field.key] !== null) {
             input.value = values[field.key];
         }
@@ -205,10 +193,6 @@ function closeConfirm() {
 function validateRecord(values) {
     if (state.activeTab === 'category') {
         return new Category(values);
-    }
-
-    if (state.activeTab === 'vendor') {
-        return new Vendor(values);
     }
 
     if (state.activeTab === 'product') {

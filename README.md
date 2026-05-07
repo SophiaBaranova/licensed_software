@@ -4,7 +4,8 @@
 
 This web application allows users to browse a catalogue of licensed software, search and filter products, and view detailed product information. It supports user registration, authentication, and role-based access control.
 
-An admin panel is provided for managing database content (categories, vendors, and products).
+An admin panel is provided for managing database content (categories and products).
+An admin panel is provided for managing database content (categories and products).
 
 ## Demo
 
@@ -24,28 +25,28 @@ After login, users are redirected based on their role to either the admin panel 
 
 ### Admin panel
 
-Administrators can perform CRUD operations on categories, vendors, and products:
+Administrators can perform CRUD operations on categories and products:
 
-![alt text](readme_images/image-3.png)
-![alt text](readme_images/image-4.png)
-![alt text](readme_images/image-5.png)
-![alt text](readme_images/image-6.png)
+![alt text](readme_images/image-8.png)
+![alt text](readme_images/image-9.png)
+![alt text](readme_images/image-10.png)
+![alt text](readme_images/image-11.png)
 
 ### Catalogue
 
 Non-admin users can view available products, filter them by category, vendor, and license type, and search by name:
 
-![alt text](readme_images/image-7.png)
-![alt text](readme_images/image-8.png)
-![alt text](readme_images/image-9.png)
+![alt text](readme_images/image-3.png)
+![alt text](readme_images/image-4.png)
+![alt text](readme_images/image-5.png)
 
 After clicking the "Детальніше" button, users are redirected to the product details page:
 
-![alt text](readme_images/image-10.png)
+![alt text](readme_images/image-6.png)
 
 They can view the download URL by clicking the "Завантажити" button:
 
-![alt text](readme_images/image-11.png)
+![alt text](readme_images/image-7.png)
 
 ## Architecture
 
