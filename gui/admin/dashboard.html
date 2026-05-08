@@ -15,7 +15,8 @@
         <div class="header-inner">
             <a class="site-brand" href="../homepage/index.html">TrustSoft</a>
             <nav class="nav-links">
-                <a href="../auth/login.html">Увійти</a>
+                <a href="../auth/login.html" id="loginLink">Увійти</a>
+                <a href="#" id="logoutLink" style="display:none">Вийти</a>
             </nav>
         </div>
     </header>
@@ -24,8 +25,8 @@
             <div class="card-body">
                 <h1 class="section-title">Панель адміністратора</h1>
                 <div class="admin-tabs" role="tablist">
-                    <button class="tab-button active" type="button" data-tab="category">Категорії</button>
-                    <button class="tab-button" type="button" data-tab="product">Продукти</button>
+                    <button class="tab-button active" type="button" data-tab="categories">Категорії</button>
+                    <button class="tab-button" type="button" data-tab="products">Товари</button>
                 </div>
             </div>
         </section>
@@ -63,7 +64,7 @@
         </section>
     </main>
     <footer class="footer">© 2026 TrustSoft</footer>
-    <script src="../../assets/app.js"></script>
+    <script type="module" src="../../assets/app.js"></script>
     <script type="module" src="script.js"></script>
 
     <div class="overlay hidden" id="modalOverlay" aria-hidden="true">

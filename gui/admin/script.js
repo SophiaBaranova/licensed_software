@@ -1,9 +1,42 @@
-import { getCategories, getVendors, getProducts } from '../../db/dataService.js';
 import Category from '../../models/Category.js';
 import Product from '../../models/Product.js';
+import { 
+    getCategories,
+    createCategory,
+    updateCategory,
+    deleteCategory,
+    getProducts,
+    createProduct,
+    updateProduct,
+    deleteProduct
+} from '../../db/dataService.js';
+
+const {
+    isAuthorized,
+    showMessage,
+    hideMessage,
+    formatPrice
+} = window.commonApp;
+
+async function init() {
+    const authorized =
+        await isAuthorized('admin');
+    if (!authorized) {
+        console.error('Помилка авторизації або недостатньо прав для доступу до сторінки');
+        return;
+    }
+
+    try {
+        await loadData();
+    } catch (error) {
+        alert(error.message || 'Помилка завантаження даних');
+        console.error(error);
+    }
+    activateTab(state.activeTab);
+}
 
 const state = {
-    activeTab: 'category',
+    activeTab: 'categories',
     selectedKey: null,
     mode: null
 };
@@ -27,48 +60,48 @@ const confirmDeleteButton = document.getElementById('confirmDeleteButton');
 const closeButtons = Array.from(document.querySelectorAll('.close-button'));
 
 const data = {
-    category: getCategories(),
-    product: getProducts()
+    categories: [],
+    products: []
 };
 
-// Оновлення даних для активної вкладки після змін у БД
-function refreshActiveData() {
-    if (state.activeTab === 'category') {
-        data.category = getCategories();
-    } else if (state.activeTab === 'product') {
-        data.product = getProducts();
-    }
+// Завантаження даних категорій та товарів з БД та відображення їх у таблиці
+async function loadData() {
+    data.categories = await getCategories();
+    data.products = await getProducts();
+    renderTable();
 }
 
+// Мапа полів для категорій та товарів, що використовується для генерації форм додавання/редагування
 const fieldsMap = {
-    category: [
+    categories: [
         { key: 'name', label: 'Назва', type: 'text', required: true },
         { key: 'description', label: 'Опис', type: 'textarea', required: false }
     ],
-    product: [
+    products: [
         { key: 'name', label: 'Назва', type: 'text', required: true },
         { key: 'short_description', label: 'Короткий опис', type: 'textarea', required: true },
         { key: 'extended_description', label: 'Повний опис', type: 'textarea', required: false },
-        { key: 'category', label: 'Категорія', type: 'select', required: true },
+        { key: 'category_id', label: 'Категорія', type: 'select', required: true },
         { key: 'vendor', label: 'Виробник', type: 'text', required: true },
         { key: 'license', label: 'Ліцензія', type: 'text', required: true },
         { key: 'price', label: 'Ціна', type: 'number', required: true },
         { key: 'version', label: 'Версія', type: 'text', required: true },
         { key: 'supported_os', label: 'Підтримувані ОС', type: 'textarea', required: true },
         { key: 'download_url', label: 'URL для завантаження', type: 'url', required: true },
-        { key: 'image_url', label: 'URL зображення', type: 'url', required: false }
+        { key: 'image', label: 'Зображення', type: 'file', required: false }
     ]
 };
 
+// Підписи для модальних вікон залежно від активної вкладки
 const tabLabels = {
-    category: 'категорію',
-    product: 'продукт'
+    categories: 'категорію',
+    products: 'товар'
 };
 
 // Повернення варіантів для полів типу select у формі
 function getOptions(fieldName) {
-    if (fieldName === 'category') {
-        return data.category.map((item) => item.name);
+    if (fieldName === 'category_id') {
+        return data.categories;
     }
     return [];
 }
@@ -76,26 +109,44 @@ function getOptions(fieldName) {
 // Повернення вибраного запису із таблиці активної вкладки
 function getActiveRecord() {
     if (!state.selectedKey) return null;
-    return data[state.activeTab].find((item) => item.name === state.selectedKey) || null;
+    return data[state.activeTab].find(
+        (item) => String(item.id) === String(state.selectedKey)
+    ) || null;
 }
 
 // Відображення таблиці записів для активної вкладки
 function renderTable() {
-    tableTitle.textContent = state.activeTab === 'category' ? 'Категорії' : 'Продукти';
+    const rows = data[state.activeTab] || [];
+
+    tableTitle.textContent =
+        state.activeTab === 'categories' ? 'Категорії' : 'Товари';
 
     tableHeadRow.innerHTML = fieldsMap[state.activeTab]
         .map((field) => `<th>${field.label}</th>`)
         .join('');
 
-    tableBody.innerHTML = data[state.activeTab]
+    tableBody.innerHTML = rows
         .map((item) => {
             const columns = fieldsMap[state.activeTab].map((field) => {
-                if (field.key === 'price') {
-                    return `<td>${formatPrice(item.price, '₴')}</td>`;
-                }
-                return `<td>${item[field.key] ?? ''}</td>`;
-            }).join('');
-            return `<tr data-key="${item.name}" class="${state.selectedKey === item.name ? 'selected' : ''}">${columns}</tr>`;
+                    if (field.key === 'price') {
+                        return `<td>${formatPrice(item.price, '₴')}</td>`;
+                    } else if (field.key === 'category_id') {
+                        return `<td>${item.category}</td>`;
+                    } else if (field.key === 'image') {
+                        if (item.image_url) {
+                            return `
+                                <td><img
+                                    src="${item.image_url}"
+                                    alt="${item.name}"
+                                    class="table-image-preview"
+                                ></td>`;
+                        } else {
+                            return `<td>-</td>`;
+                        }
+                    }
+                    return `<td>${item[field.key] ?? ''}</td>`;
+                }).join('');
+            return `<tr data-key="${item.id}" class="${state.selectedKey == item.id ? 'selected' : ''}">${columns}</tr>`;
         })
         .join('');
 }
@@ -119,6 +170,7 @@ function selectRow(key) {
 // Відображення полів форми для додавання/редагування запису у модальному вікні
 function renderFormFields(values = {}) {
     modalFields.innerHTML = '';
+
     fieldsMap[state.activeTab].forEach((field) => {
         const row = document.createElement('div');
         row.className = 'modal-field';
@@ -133,25 +185,42 @@ function renderFormFields(values = {}) {
         } else if (field.type === 'select') {
             input = document.createElement('select');
             const options = field.options || getOptions(field.key);
-            options.forEach((optionValue) => {
-                const option = document.createElement('option');
-                option.value = optionValue;
-                option.textContent = optionValue;
-                input.append(option);
+            options.forEach((option) => {
+                const optionElement = document.createElement('option');
+                optionElement.value = option.id;
+                optionElement.textContent = option.name;
+                input.append(optionElement);
             });
         } else {
             input = document.createElement('input');
             input.type = field.type;
+            if (field.type === 'number') {
+                input.min = '0';
+                input.step = '0.01';
+            } else if (field.type === 'file') {
+                input.accept = 'image/*';
+            }
         }
 
         input.id = `field-${field.key}`;
         input.name = field.key;
         input.required = field.required;
-        if (values[field.key] !== undefined && values[field.key] !== null) {
+
+        // Заповнення полів даними вибраного запису при редагуванні
+        if (field.type !== 'file' && values[field.key] !== undefined && values[field.key] !== null) {
             input.value = values[field.key];
         }
 
         row.append(label, input);
+
+        if (field.key === 'image' && values.image_url) {
+            const preview = document.createElement('img');
+            preview.src = values.image_url;
+            preview.alt = 'Попередній перегляд зображення';
+            preview.className = 'image-preview';
+            row.append(preview);
+        }
+
         modalFields.append(row);
     });
 }
@@ -164,6 +233,8 @@ function openModal(mode) {
     renderFormFields(record || {});
     modalOverlay.classList.remove('hidden');
     modalOverlay.setAttribute('aria-hidden', 'false');
+    const message = document.getElementById('formMessage');
+    hideMessage(message);
 }
 
 // Закриття модального вікна
@@ -178,12 +249,16 @@ function closeModal() {
 function openConfirm() {
     const record = getActiveRecord();
     if (!record) return;
-    confirmText.textContent = `Ви дійсно хочете видалити запис «${record.name}»?`;
+    let confirmMessage = `Ви дійсно хочете видалити запис «${record.name}»?`;
+    if (state.activeTab === 'categories') {
+        confirmMessage += ' Всі товари цієї категорії також будуть видалені.';
+    }
+    confirmText.textContent = confirmMessage;
     confirmOverlay.classList.remove('hidden');
     confirmOverlay.setAttribute('aria-hidden', 'false');
 }
 
-// Закриття діалогового вікна підтвердження видалення
+// Закриття модального вікна підтвердження видалення запису
 function closeConfirm() {
     confirmOverlay.classList.add('hidden');
     confirmOverlay.setAttribute('aria-hidden', 'true');
@@ -191,27 +266,33 @@ function closeConfirm() {
 
 // Валідація даних форми (шляхом спроби створення відповідного об'єкта)
 function validateRecord(values) {
-    if (state.activeTab === 'category') {
+    if (state.activeTab === 'categories') {
         return new Category(values);
     }
-
-    if (state.activeTab === 'product') {
-        return new Product({
-            ...values,
-            price: Number(values.price)
-        });
-    }
+    return new Product(values);
 }
 
 // Збереження нового/відредагованого запису у БД після валідації
-function saveRecord(formData) {
+async function saveRecord(formData) {
     const values = Object.fromEntries(formData.entries());
     const message = document.getElementById('formMessage');
+
+    if (values.image instanceof File && values.image.size === 0) {
+        values.image = null;
+    }
 
     let entity;
 
     try {
-        entity = validateRecord(values);
+        if (state.mode === 'edit') {
+            const record = getActiveRecord();
+            entity = validateRecord({
+                ...values,
+                id: record?.id
+            });
+        } else {
+            entity = validateRecord(values);
+        }
     } catch (error) {
         showMessage(message, error.message);
         return;
@@ -219,29 +300,68 @@ function saveRecord(formData) {
 
     hideMessage(message);
 
-    if (state.mode === 'edit') {
-        const record = getActiveRecord();
-        if (!record) return;
-        
-        // TODO: Оновлення запису у БД
-    } else {
-        // TODO: Збереження нового запису у БД
-    }
+    try {
 
-    refreshActiveData();
-    clearSelection();
-    closeModal();
+        if (state.activeTab === 'products') {
+            // Підготовка даних для відправки, включаючи файл зображення, якщо він є
+            const requestData = new FormData();
+            Object.entries(entity).forEach(([key, value]) => {
+                requestData.append(key, value);
+            });
+            if (values.image) {
+                requestData.append('image', values.image);
+            }
+
+            if (state.mode === 'edit') {
+                // Оновлення запису у БД
+                console.log("Updating product with data:", Object.fromEntries(requestData.entries()));
+                await updateProduct(requestData);
+            } else {
+                // Створення нового запису у БД
+                await createProduct(requestData);
+            }
+
+        } else {
+            if (state.mode === 'edit') {
+                // Оновлення запису у БД
+                await updateCategory(entity);
+            } else {
+                // Створення нового запису у БД
+                await createCategory(entity);
+            }
+        }
+
+        // Оновлення даних таблиць, очищення вибору та закриття модального вікна
+        await loadData();
+        clearSelection();
+        closeModal();
+
+    } catch (error) {
+        showMessage(message, error.message || "Помилка збереження даних");
+        console.error(error);
+    }
 }
 
 // Видалення запису з БД після підтвердження
-function deleteRecord() {
+async function deleteRecord() {
     if (!state.selectedKey) return;
-    
-    // TODO: Видалення запису із БД
 
-    refreshActiveData();
-    clearSelection();
-    closeConfirm();
+    try {
+        if (state.activeTab === 'categories') {
+            await deleteCategory(state.selectedKey);
+        } else {
+            await deleteProduct(state.selectedKey);
+        }
+
+        // Оновлення даних таблиць, очищення вибору та закриття модального вікна
+        await loadData();
+        clearSelection();
+        closeConfirm();
+
+    } catch (error) {
+        alert(error.message || "Помилка видалення даних");
+        console.error(error);
+    }
 }
 
 // Активація вкладки та відповідне оновлення таблиці
@@ -254,21 +374,23 @@ function activateTab(tabName) {
     renderTable();
 }
 
+// Вибір рядка в таблиці при кліку
 tableBody.addEventListener('click', (event) => {
     const row = event.target.closest('tr');
     if (!row) return;
     selectRow(row.dataset.key);
 });
 
+// Обробники подій для кнопок додавання, редагування та видалення записів
 addButton.addEventListener('click', () => openModal('add'));
 editButton.addEventListener('click', () => openModal('edit'));
 deleteButton.addEventListener('click', () => openConfirm());
 
+// Обробники подій для модальнх вікон
 recordForm.addEventListener('submit', (event) => {
     event.preventDefault();
     saveRecord(new FormData(recordForm));
 });
-
 cancelButton.addEventListener('click', closeModal);
 cancelDeleteButton.addEventListener('click', closeConfirm);
 confirmDeleteButton.addEventListener('click', deleteRecord);
@@ -278,21 +400,20 @@ closeButtons.forEach((button) => {
         closeConfirm();
     });
 });
-
 modalOverlay.addEventListener('click', (event) => {
     if (event.target === modalOverlay) {
         closeModal();
     }
 });
-
 confirmOverlay.addEventListener('click', (event) => {
     if (event.target === confirmOverlay) {
         closeConfirm();
     }
 });
 
+// Активація вкладки при кліку
 tabButtons.forEach((button) => {
     button.addEventListener('click', () => activateTab(button.dataset.tab));
 });
 
-activateTab(state.activeTab);
+init();

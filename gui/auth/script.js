@@ -1,41 +1,63 @@
 import User from '../../models/User.js';
+import {
+    createUser,
+    loginUser,
+    checkLoginUnique
+} from '../../db/dataService.js';
 
-// Валідація даних форми реєстрації та створення нового користувача
-function validateSignupForm() {
+const {
+    showMessage,
+    hideMessage
+} = window.commonApp;
+
+// Обробка даних форми реєстрації
+async function processSignupForm() {
     const form = document.getElementById('signupForm');
     const message = document.getElementById('signupMessage');
 
-    form.addEventListener('submit', (event) => {
+    form.addEventListener('submit', async (event) => {
         event.preventDefault();
         const formData = new FormData(form);
-        const login = formData.get('login').trim();
-        const email = formData.get('email').trim();
-        const password = formData.get('password').trim();
+        const values = Object.fromEntries(formData.entries());
 
+        let user = null;
+        // Валідація даних шляхом створення об'єкта User
         try {
-            const user = new User(login, email, password);
+            user = new User(values);
         } catch (error) {
             showMessage(message, error.message);
             return;
         }
 
-        // TODO: Перевірка унікальності логіна у БД
+        try {
+            // Перевірка унікальності логіна у БД
+            const checkLoginResult = await checkLoginUnique(user.login);
 
-        // TODO: Збереження нового користувача у БД
+            if (!checkLoginResult.unique) {
+                showMessage(message, 'Користувач із таким логіном уже існує');
+                return;
+            }
 
-        hideMessage(message);
-        window.location.href = 'login.html';
+            // Збереження нового користувача у БД
+            await createUser(user);
+
+            hideMessage(message);
+
+            // Перенаправлення користувача на сторінку авторизації після успішної реєстрації
+            window.location.href = 'login.html';
+        }
+        catch (error) {
+            showMessage(message, error.message);
+        }
     });
 }
 
-// Валідація даних форми входу та перевірка облікового запису
-function validateLoginForm() {
+// Обробка даних форми авторизації
+async function processLoginForm() {
     const form = document.getElementById('loginForm');
     const message = document.getElementById('loginMessage');
 
-    if (!form || !message) return;
-
-    form.addEventListener('submit', (event) => {
+    form.addEventListener('submit', async (event) => {
         event.preventDefault();
         const formData = new FormData(form);
         const login = formData.get('login').trim();
@@ -46,24 +68,31 @@ function validateLoginForm() {
             return;
         }
 
-        // TODO: Перевірка наявності облікового запису у БД та коректності пароля
+        try {
+            // Перевірка наявності облікового запису у БД та коректності пароля
+            const user = await loginUser(login, password);
 
-        hideMessage(message);
+            hideMessage(message);
 
-        // Заглушка для демонстрації розмежування прав доступу (адмін vs користувач)
-        if (login === 'admin' && password === 'admin_password') {
-            window.location.href = '../admin/dashboard.html';
-        } else {
-            window.location.href = '../catalog/catalog.html';
+            // Перенаправлення користувача на відповідну сторінку залежно від ролі
+            if (user.user.role === 'admin') {
+                window.location.href = '../admin/dashboard.html';
+            }
+            else {
+                window.location.href = '../catalog/catalog.html';
+            }
+        }
+        catch (error) {
+            showMessage(message, error.message);
         }
     });
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     if (document.getElementById('signupForm')) {
-        validateSignupForm();
+        await processSignupForm();
     }
     if (document.getElementById('loginForm')) {
-        validateLoginForm();
+        await processLoginForm();
     }
 });

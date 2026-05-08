@@ -24,11 +24,27 @@
     grid-template-columns: minmax(0, 1fr) 280px;
     gap: 18px;
     align-items: start;
+    min-height: 0;
 }
 
 .action-panel {
     display: grid;
     gap: 14px;
+    position: sticky;
+    top: 20px;
+    align-self: start;
+}
+
+.image-preview {
+    width: 120px;
+    margin-top: 8px;
+    border-radius: 8px;
+}
+
+.table-image-preview {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
 }
 
 .action-buttons {
@@ -68,11 +84,14 @@
 }
 
 .table-section {
-    overflow-x: auto;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
 }
 
 .table-wrap {
-    overflow-x: auto;
+    overflow: auto;
+    max-height: 70vh;
     border: 1px solid var(--border);
     border-radius: 12px;
 }

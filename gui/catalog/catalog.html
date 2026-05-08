@@ -16,7 +16,8 @@
             <a class="site-brand" href="../homepage/index.html">TrustSoft</a>
             <nav class="nav-links">
                 <a href="catalog.html">Каталог</a>
-                <a href="../auth/login.html">Увійти</a>
+                <a href="../auth/login.html" id="loginLink">Увійти</a>
+                <a href="#" id="logoutLink" style="display:none">Вийти</a>
             </nav>
         </div>
     </header>
@@ -24,7 +25,7 @@
         <section class="catalog-top card">
             <div class="card-body">
                 <div class="catalog-search">
-                    <input id="searchInput" type="search" placeholder="Пошук продуктів за назвою..." />
+                    <input id="searchInput" type="search" placeholder="Пошук товарів за назвою..." />
                     <button id="searchButton" class="button button-primary" type="button" disabled>Шукати</button>
                 </div>
             </div>
@@ -46,12 +47,13 @@
                 </div>
             </aside>
             <section class="products-panel">
+                <div id="productsNotFound" class="card-body section-title products-not-found" hidden></div>
                 <div class="product-grid grid" id="catalogProducts"></div>
             </section>
         </div>
     </main>
     <footer class="footer">© 2026 TrustSoft</footer>
-    <script src="../../assets/app.js"></script>
+    <script type="module" src="../../assets/app.js"></script>
     <script type="module" src="catalog.js"></script>
 </body>
 </html>

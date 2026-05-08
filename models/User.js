@@ -1,26 +1,34 @@
 export default class User {
-    constructor(
+    constructor({
         login,
         email,
         password,
-        role
-    ) {
-        if (!login?.trim()) {
-            throw new Error("Логін не може бути порожнім");
-        }
+        role = "user"
+    }) {
+        const loginNorm = login?.trim();
+        const emailNorm = email?.trim();
+        const passwordNorm = password?.trim();
+        const roleNorm = role?.trim().toLowerCase();
 
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
-            throw new Error("Email має бути коректним");
-        }
+        if (!loginNorm) { throw new Error("Логін не може бути порожнім"); }
+        if (!emailNorm) { throw new Error("Email не може бути порожнім"); }
 
-        if (!password || password.length < 6) {
+        if (!passwordNorm || passwordNorm.length < 6) {
             throw new Error("Пароль має містити щонайменше 6 символів");
         }
 
-        this.login = login.trim();
-        this.email = email;
-        this.password = password;
-        this.role = "USER";
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(emailNorm)) {
+            throw new Error("Email має бути коректним");
+        }
+
+        if (!["user", "admin"].includes(roleNorm)) {
+            throw new Error("Роль має бути 'user' або 'admin'");
+        }
+
+        this.login = loginNorm;
+        this.email = emailNorm;
+        this.password = passwordNorm;
+        this.role = roleNorm;
     }
 }

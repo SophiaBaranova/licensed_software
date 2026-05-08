@@ -1,18 +1,23 @@
 export default class Category {
-    constructor(
-        id,
+    constructor({
+        id = null,
         name,
         description
-    ) {
-        if (id !== null && (!Number.isInteger(id) || id <= 0)) {
-            throw new Error("ID повинен бути цілим додатним числом");
-        }
-        
-        if (!name?.trim()) {
-            throw new Error("Назва не може бути порожньою");
+    }) {
+        const nameNorm = name?.trim();
+        const descriptionNorm = description?.trim() || null;
+
+        if (!nameNorm) throw new Error("Назва не може бути порожньою");
+
+        if (id !== null ) {
+            const idNorm = Number(id);
+            if (!Number.isInteger(idNorm) || idNorm <= 0) {
+                throw new Error("ID повинен бути цілим додатним числом");
+            }
+            this.id = idNorm;
         }
 
-        this.name = name.trim();
-        this.description = description.trim() || null;
+        this.name = nameNorm;
+        this.description = descriptionNorm;
     }
 }
